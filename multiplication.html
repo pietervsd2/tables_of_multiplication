@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tafels van vermenigvuldiging</title>
+    <style>
+        .game-container::before {
+        content: "";
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 0;
+        height: 100%;
+        background-image: url("unicorn1.png");
+        background-size: cover;
+        background-position: center;
+        z-index: -1;
+        transition: width 0.5s;
+        opacity: 0.5;
+        width: var(--reveal-width);
+        background-image: var(--background-image);
+        }
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f0f0f0;
+        }
+        .game-container {
+            display: inline-block;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            --reveal-width: 0;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+      .numpad-button {
+          padding: 10px;
+          background-color: #4CAF50;
+          color: white;
+          font-size: 16px;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+          margin: 5px;
+          width: 50px;
+      }
+      .numpad-button:hover {
+         background-color: #45a049;
+      }
+      .equation {
+        font-size: 24px;
+        font-weight: bold;
+      }
+      .final-score {
+        font-size: 24px;
+        font-weight: bold;
+        color: white;
+        text-align: center;
+        padding-top: 20px;
+      }
+
+    .small-restart-button {
+        display: inline-block;
+        background-color: #4CAF50;
+        color: white;
+        font-size: 16px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        padding: 10px 20px;
+        margin-top: 10px;
+    }
+    </style>
+</head>
+<body>
+  <div id="game-wrapper">
+    <div class="game-container">
+        <h1>Rekentafels spelletje</h1>
+        <p>Score: <span id="score">0</span> / 20</p>
+        <p>Tijd:  <span id="timer">0</span> seconden</p>
+        <p id="equation"></p>
+        <input type="number" id="answer" min="0" step="1">
+        <button id="submit">OK</button>
+        <div id="numpad">
+            <button class="numpad-button" data-value="1">1</button>
+            <button class="numpad-button" data-value="2">2</button>
+            <button class="numpad-button" data-value="3">3</button><br>
+            <button class="numpad-button" data-value="4">4</button>
+            <button class="numpad-button" data-value="5">5</button>
+            <button class="numpad-button" data-value="6">6</button><br>
+            <button class="numpad-button" data-value="7">7</button>
+            <button class="numpad-button" data-value="8">8</button>
+            <button class="numpad-button" data-value="9">9</button><br>
+            <button class="numpad-button" data-value="0">0</button>
+            <button class="numpad-button" id="clear">Leegmaken</button>
+        </div>
+        <p id="feedback"></p>
+        <p>Hoogste Score: <span id="high-score">-</span> seconden</p>
+
+    </div>
+  </div>
+    <script src="src/multiplication_game.js"></script>
+
+</body>
+</html>

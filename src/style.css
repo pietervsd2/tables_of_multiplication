@@ -1,0 +1,83 @@
+/* style.css */
+
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  background-color: #f0f0f0;
+}
+
+.game-container::before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--reveal-width);
+  height: 100%;
+  background: url("unicorn1.png") center/cover;
+  z-index: -1;
+  transition: width 0.5s;
+  opacity: 0.5;
+}
+
+.game-container {
+  display: inline-block;
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  --reveal-width: 0;
+}
+
+.green-button {
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin: 5px;
+}
+
+.green-button:hover {
+  background-color: #45a049;
+}
+
+.numpad-button {
+  width: 50px;
+}
+
+.equation {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.final-score {
+  font-size: 24px;
+  font-weight: bold;
+  color: white;
+  text-align: center;
+  padding-top: 20px;
+}
+
+.small-restart-button {
+  display: inline-block;
+  background-color: #4CAF50;
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 10px 20px;
+  margin-top: 10px;
+}
+
+#particles-js {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  visibility: hidden;
+}
