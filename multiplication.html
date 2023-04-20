@@ -18,8 +18,9 @@
         background-position: center;
         z-index: -1;
         transition: width 0.5s;
-        opacity: 0.5;
+        opacity: 1;
         width: var(--reveal-width);
+        color: #000055;
         background-image: var(--background-image);
         }
         body {
@@ -29,11 +30,17 @@
         }
         .game-container {
             display: inline-block;
-            background-color: white;
+            background-color: transparent;
             padding: 20px;
             border-radius: 8px;
             --reveal-width: 0;
         }
+        .selected {
+            background-color: #551e34 !important; /* Change this color to your preference */
+            color: white !important;
+            border-color: #551e34 !important; /* Change this color to your preference */
+        }
+
         button {
             padding: 10px 20px;
             background-color: #4CAF50;
@@ -63,6 +70,7 @@
       }
       .equation {
         font-size: 24px;
+        color: #000088;
         font-weight: bold;
       }
       .final-score {
@@ -90,6 +98,21 @@
   <div id="game-wrapper">
     <div class="game-container">
         <h1>Rekentafels spelletje</h1>
+        <div class="options">
+          <p>Choose an operation:</p>
+          <button id="multiplication">Vermenigvuldigen</button>
+          <button id="division">Delen</button>
+          <button id="both">Beide</button>
+    
+          <p>Choose a difficulty:</p>
+          <button id="easy">Gemakkelijk</button>
+          <button id="difficult">Moeilijk</button>
+    </div>
+
+<div class="game-elements" style="display: none;">
+    <!-- Your existing game elements go here -->
+</div>
+
         <p>Score: <span id="score">0</span> / 20</p>
         <p>Tijd:  <span id="timer">0</span> seconden</p>
         <p id="equation"></p>
@@ -109,7 +132,7 @@
             <button class="numpad-button" id="clear">Leegmaken</button>
         </div>
         <p id="feedback"></p>
-        <p>Hoogste Score: <span id="high-score">-</span> seconden</p>
+        <p>Hoogste Score: <span id="high-score">-</span> punten</p>
 
     </div>
   </div>

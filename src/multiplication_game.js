@@ -10,10 +10,28 @@ const backgroundImages = [
     "res/image02.jpg",
     "res/image03.jpg",
     "res/image04.jpg",
-    "res/image05.jpg"
+    "res/image05.jpg",
+    "res/image05.jpg",
+    "res/image06.jpg",
+    "res/image07.jpg",
+    "res/image08.jpg",
+    "res/image09.jpg",
+    "res/image10.jpg",
+    "res/image11.jpg",
+    "res/image12.jpg",
+    "res/image13.jpg",
+    "res/image14.jpg",
+    "res/image15.jpg"
 ];
 const numpadButtons = document.querySelectorAll(".numpad-button");
 const clearButton = document.getElementById("clear");
+const multiplicationButton = document.getElementById("multiplication");
+const divisionButton = document.getElementById("division");
+const bothButton = document.getElementById("both");
+const easyButton = document.getElementById("easy");
+const difficultButton = document.getElementById("difficult");
+const options = document.querySelector(".options");
+const gameElements = document.querySelector(".game-elements");
 
 numpadButtons.forEach(button => {
     button.addEventListener("click", () => {
@@ -33,6 +51,10 @@ let firstAnswerTime = null;
 let score = 0;
 let startTime = null;
 let correctAnswer = 0;
+let operation = "multiplication";
+let difficulty = "easy";
+let chosenOperation = false;
+let chosenDifficulty = false;
 
 
 
@@ -49,12 +71,43 @@ function updateBackground() {
 }
 
 
-function generateEquation() {
-    const num1 = Math.floor(Math.random() * 10) + 1;
-    const num2 = Math.floor(Math.random() * 10) + 1;
-    correctAnswer = num1 * num2;
-    equationDisplay.innerText = `${num1} × ${num2} = `;
+function generateOperationEquation(operationType, num1, num2) {
+    if (operationType === "multiplication") {
+        equationDisplay.innerText = `${num1} × ${num2}`;
+        correctAnswer = num1 * num2;
+    } else if (operationType === "division") {
+        const product = num1 * num2;
+        equationDisplay.innerText = `${product} ÷ ${num2}`;
+        correctAnswer = num1;
+    }
+    return correctAnswer;
 }
+
+function generateEquation() {
+    let num1;
+    let num2;
+    let difficultyFactor;
+
+    if (difficulty === "difficult") {
+        difficultyFactor = 0.5;
+    } else {
+        difficultyFactor = 1;
+    }
+
+    do {
+        num1 = Math.floor(Math.random() * 9) + 1; // Generate a random number between 1 and 9 (inclusive)
+        num2 = Math.floor(Math.random() * 9) + 1; // Generate a random number between 1 and 9 (inclusive)
+    } while (Math.random() > difficultyFactor && (num1 < 6 || num2 < 6));
+
+    if (operation === "both") {
+        const randomOperation = Math.random() > 0.5 ? "multiplication" : "division";
+        return generateOperationEquation(randomOperation, num1, num2);
+    } else {
+        return generateOperationEquation(operation, num1, num2);
+    }
+}
+
+
 
 function checkAnswer() {
     const userAnswer = parseInt(answerInput.value);
@@ -79,6 +132,51 @@ function checkAnswer() {
     }
 }
 
+function selectButton(button, otherButtons) {
+    button.classList.add("selected");
+    otherButtons.forEach((otherButton) => {
+        otherButton.classList.remove("selected");
+    });
+}
+
+// Update the event listeners for the operation buttons
+multiplicationButton.addEventListener("click", () => {
+    operation = "multiplication";
+    chosenOperation = true;
+    selectButton(multiplicationButton, [divisionButton, bothButton]);
+    if (chosenOperation && chosenDifficulty) startGame();
+});
+
+divisionButton.addEventListener("click", () => {
+    operation = "division";
+    chosenOperation = true;
+    selectButton(divisionButton, [multiplicationButton, bothButton]);
+    if (chosenOperation && chosenDifficulty) startGame();
+});
+
+bothButton.addEventListener("click", () => {
+    operation = "both";
+    chosenOperation = true;
+    selectButton(bothButton, [multiplicationButton, divisionButton]);
+    if (chosenOperation && chosenDifficulty) startGame();
+});
+
+// Update the event listeners for the difficulty buttons
+easyButton.addEventListener("click", () => {
+    difficulty = "easy";
+    chosenDifficulty = true;
+    selectButton(easyButton, [difficultButton]);
+    if (chosenOperation && chosenDifficulty) startGame();
+});
+
+difficultButton.addEventListener("click", () => {
+    difficulty = "difficult";
+    chosenDifficulty = true;
+    selectButton(difficultButton, [easyButton]);
+    if (chosenOperation && chosenDifficulty) startGame();
+});
+
+
 
 function startGame() {
     score = 0;
@@ -99,7 +197,6 @@ function endGame() {
     startTime = null; // Stop the timer
     submitButton.disabled = true;
     answerInput.disabled = true;
-    feedbackDisplay.innerText = "GOED GEDAAN! Je hebt 20 vragen correct beantwoord.";
 
     const currentTime = new Date();
     const timeElapsed = Math.floor((currentTime - firstAnswerTime) / 1000);
@@ -109,25 +206,32 @@ function endGame() {
         highScore = finalScore;
         highScoreDisplay.innerText = highScore;
     }
-    setTimeout(function() {
-      // Create a new container element for the background image
-      //const backgroundImageContainer = document.createElement('div');
-      //backgroundImageContainer.style.height = '100vh';
-      //backgroundImageContainer.style.width = '100vw';
-      
-      //backgroundImageContainer.style.setProperty("--background-image", `url("${randomBackgroundImage}")`);
-      //backgroundImageContainer.style.backgroundSize = 'cover';
-      //backgroundImageContainer.style.backgroundPosition = 'center';
 
-      // Remove all elements from the screen
-      document.getElementById('game-wrapper').innerHTML = '';
-      
+    // Hide the game elements
+    equationDisplay.style.display = "none";
+    answerInput.style.display = "none";
+    numpad.style.display = "none";
+    submitButton.style.display = "none";
+    timerDisplay.style.display = "none";
+    feedbackDisplay.style.display = "none";
+    options.style.display = "none";
 
-      // Add the background image container back to the body
-      //document.body.appendChild(backgroundImageContainer);
-    }, 4000);
-    document.body.style.backgroundImage = `url('${randomBackgroundImage}')`;
+    // Show the final score text
+    const finalScoreText = document.createElement("p");
+    finalScoreText.innerText = `Congratulations! Your final score is ${finalScore}.`;
+    finalScoreText.style.position = "absolute";
+    finalScoreText.style.top = "50%";
+    finalScoreText.style.left = "50%";
+    finalScoreText.style.transform = "translate(-50%, -50%)";
+    finalScoreText.style.fontSize = "24px";
+    finalScoreText.style.fontWeight = "bold";
+    finalScoreText.style.textAlign = "center";
+    gameContainer.appendChild(finalScoreText);
 
+    // Refresh the page after 5 seconds
+    setTimeout(() => {
+        location.reload();
+    }, 5000);
 }
 
 function updateTimer() {
@@ -154,4 +258,4 @@ document.addEventListener("keydown", (event) => {
 });
 
 // Start the game
-startGame();
+//startGame();
